@@ -1,0 +1,1042 @@
+<script type="text/javascript">
+        var gk_isXlsx = false;
+        var gk_xlsxFileLookup = {};
+        var gk_fileData = {};
+        function filledCell(cell) {
+          return cell !== '' && cell != null;
+        }
+        function loadFileData(filename) {
+        if (gk_isXlsx && gk_xlsxFileLookup[filename]) {
+            try {
+                var workbook = XLSX.read(gk_fileData[filename], { type: 'base64' });
+                var firstSheetName = workbook.SheetNames[0];
+                var worksheet = workbook.Sheets[firstSheetName];
+
+                // Convert sheet to JSON to filter blank rows
+                var jsonData = XLSX.utils.sheet_to_json(worksheet, { header: 1, blankrows: false, defval: '' });
+                // Filter out blank rows (rows where all cells are empty, null, or undefined)
+                var filteredData = jsonData.filter(row => row.some(filledCell));
+
+                // Heuristic to find the header row by ignoring rows with fewer filled cells than the next row
+                var headerRowIndex = filteredData.findIndex((row, index) =>
+                  row.filter(filledCell).length >= filteredData[index + 1]?.filter(filledCell).length
+                );
+                // Fallback
+                if (headerRowIndex === -1 || headerRowIndex > 25) {
+                  headerRowIndex = 0;
+                }
+
+                // Convert filtered JSON back to CSV
+                var csv = XLSX.utils.aoa_to_sheet(filteredData.slice(headerRowIndex)); // Create a new sheet from filtered array of arrays
+                csv = XLSX.utils.sheet_to_csv(csv, { header: 1 });
+                return csv;
+            } catch (e) {
+                console.error(e);
+                return "";
+            }
+        }
+        return gk_fileData[filename] || "";
+        }
+        </script><!DOCTYPE html>
+<html>
+<head>
+    <title>Enhanced Bhanu Nuclear Power Plant Vendor Risk Assessment Matrix</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            color: #333;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .header {
+            background-color: #4472C4;
+            color: white;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .section {
+            margin-top: 30px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            font-size: 16px;
+            color: #4472C4;
+            border-bottom: 2px solid #4472C4;
+            padding-bottom: 5px;
+        }
+        .input {
+            background-color: #FFFFCC;
+        }
+        .formula {
+            background-color: #E6F0FF;
+        }
+        .total {
+            font-weight: bold;
+            background-color: #E6E6E6;
+        }
+        .high-risk {
+            background-color: #FFCCCC;
+        }
+        .medium-risk {
+            background-color: #FFFFCC;
+        }
+        .low-risk {
+            background-color: #CCFFCC;
+        }
+        .tab {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #ddd;
+            cursor: pointer;
+            margin-right: 5px;
+            border-radius: 5px 5px 0 0;
+        }
+        .tab.active {
+            background  background-color: #4472C4;
+            color: white;
+        }
+        .tabcontent {
+            display: none;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 0 5px 5px 5px;
+        }
+        .show {
+            display: block;
+        }
+        .info-icon {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            background-color: #4472C4;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 18px;
+            font-size: 12px;
+            margin-left: 5px;
+            cursor: help;
+        }
+        .tooltip {
+            position: relative;
+            display: inline-block;
+        }
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 250px;
+            background-color: #555;
+            color: #fff;
+            text-align: left;
+            border-radius: 6px;
+            padding: 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -125px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-weight: normal;
+            font-size: 12px;
+        }
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
+        .badge {
+            display: inline-block;
+            padding: 3px 7px;
+            font-size: 12px;
+            font-weight: bold;
+            line-height: 1;
+            color: #fff;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: baseline;
+            border-radius: 10px;
+            background-color: #5cb85c;
+            margin-left: 5px;
+        }
+        .badge-nrc {
+            background-color: #d9534f;
+        }
+        .badge-iaea {
+            background-color: #5bc0de;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Enhanced Bhanu Nuclear Power Plant Vendor Information Security Risk Assessment Matrix</h1>
+        <p>Version 1.5 - Comprehensive Nuclear Industry Risk Assessment Framework</p>
+    </div>
+    
+    <div class="tabs">
+        <div class="tab active" onclick="openTab(event, 'MainAssessment')">Main Assessment</div>
+        <div class="tab" onclick="openTab(event, 'DataSensitivity')">Data Sensitivity</div>
+        <div class="tab" onclick="openTab(event, 'SystemAccess')">System Access</div>
+        <div class="tab" onclick="openTab(event, 'BusinessImpact')">Business Impact</div>
+        <div class="tab" onclick="openTab(event, 'Compliance')">Compliance</div>
+        <div class="tab" onclick="openTab(event, 'TechIntegration')">Tech Integration</div>
+        <div class="tab" onclick="openTab(event, 'VendorMaturity')">Vendor Maturity</div>
+        <div class="tab" onclick="openTab(event, 'SafetySystems')">Safety Systems</div>
+        <div class="tab" onclick="openTab(event, 'PhysicalAccess')">Physical Access</div>
+        <div class="tab" onclick="openTab(event, 'RadiationExposure')">Radiation Exposure</div>
+        <div class="tab" onclick="openTab(event, 'SupplyChain')">Supply Chain</div>
+        <div class="tab" onclick="openTab(event, 'CyberDefense')">Cyber Defense</div>
+        <div class="tab" onclick="openTab(event, 'RegCompliance')">Regulatory Compliance</div>
+        <div class="tab" onclick="openTab(event, 'QualityAssurance')">Quality Assurance</div>
+        <div class="tab" onclick="openTab(event, 'SafetyCulture')">Safety Culture</div>
+        <div class="tab" onclick="openTab(event, 'OPEX')">Operating Experience</div>
+        <div class="tab" onclick="openTab(event, 'EmergencyPrep')">Emergency Prep</div>
+        <div class="tab" onclick="openTab(event, 'PersonnelSecurity')">Personnel Security</div>
+        <div class="tab" onclick="openTab(event, 'DesignBasis')">Design Basis</div>
+    </div>
+    
+    <div id="MainAssessment" class="tabcontent show">
+        <p><strong>Instructions:</strong> Enter scores for each criteria based on the scoring guidelines from reference tabs. The matrix will automatically calculate the total risk score and determine the vendor's risk tier.</p>
+        
+        <table>
+            <tr>
+                <td><strong>Vendor Name:</strong></td>
+                <td class="input" contenteditable="true">Vendor Name Here</td>
+                <td><strong>Contract Reference:</strong></td>
+                <td class="input" contenteditable="true">Contract #</td>
+            </tr>
+            <tr>
+                <td><strong>Date of Assessment:</strong></td>
+                <td class="input" contenteditable="true">Date</td>
+                <td><strong>Review Period:</strong></td>
+                <td class="input" contenteditable="true">Annual/Bi-annual</td>
+            </tr>
+            <tr>
+                <td><strong>Assessor:</strong></td>
+                <td class="input" contenteditable="true">Name</td>
+                <td><strong>Department:</strong></td>
+                <td class="input" contenteditable="true">Department</td>
+            </tr>
+        </table>
+        
+        <div class="section">Risk Scoring by Category</div>
+        
+        <table id="riskTable">
+            <tr>
+                <th>Category</th>
+                <th>Selection</th>
+                <th>Weight</th>
+                <th>Score</th>
+                <th>Weighted Score</th>
+                <th>Max Possible</th>
+            </tr>
+            <tr>
+                <td>
+                    Data Sensitivity
+                    <div class="tooltip"><span class="info-icon">i</span>
+                        <span class="tooltiptext">Evaluates the sensitivity and classification of data the vendor will access or process</span>
+                    </div>
+                    <span class="badge badge-nrc">NRC</span>
+                </td>
+                <td class="input">
+                    <select id="dataSensitivity" onchange="updateScores()">
+                        <option value="">Select...</option>
+                        <option value="5">Critical Nuclear Data/Systems Information (SCADA, Design, Security)</option>
+                        <option value="4">Operations Data (Maintenance, Fuel, Personnel)</option>
+                        <option value="3">Limited Sensitive Data (Administrative, Non-Critical)</option>
+                        <option value="2">Minimal Internal Data (Non-Operations)</option>
+                        <option value="1">Public/Non-Sensitive Data Only</option>
+                    </select>
+                </td>
+                <td>5</td>
+                <td class="formula" id="dsScore">0</td>
+                <td class="formula" id="dsWeighted">0</td>
+                <td>25</td>
+            </tr>
+            <tr>
+                <td>
+                    System Access
+                    <div class="tooltip"><span class="info-icon">i</span>
+                        <span class="tooltiptext">Measures the level of access to nuclear facility systems and networks</span>
+                    </div>
+                    <span class="badge badge-nrc">NRC</span>
+                </td>
+                <td class="input">
+                    <select id="systemAccess" onchange="updateScores()">
+                        <option value="">Select...</option>
+                        <option value="5">Safety-Critical Systems/OT Network Access</option>
+                        <option value="4">Control System Network/ICS Access</option>
+                        <option value="3">Corporate Network/Limited IT-OT Access</option>
+                        <option value="2">Development/Test Environment Only</option>
+                        <option value="1">No System Access</option>
+                    </select>
+                </td>
+                <td>4</td>
+                <td class="formula" id="saScore">0</td>
+                <td class="formula" id="saWeighted">0</td>
+                <td>20</td>
+            </tr>
+            <tr>
+                <td>
+                    Business Impact
+                    <div class="tooltip"><span class="info-icon">i</span>
+                        <span class="tooltiptext">Evaluates the impact on plant operations if vendor services are disrupted</span>
+                    </div>
+                </td>
+                <td class="input">
+                    <select id="businessImpact" onchange="updateScores()">
+                        <option value="">Select...</option>
+                        <option value="5">Reactor Safety/Plant Continuity Function</option>
+                        <option value="4">Production Systems/Limited Alternatives</option>
+                        <option value="3">Supporting Operations/Back-Office Systems</option>
+                        <option value="2">Administrative Function/Multiple Alternatives</option>
+                        <option value="1">Minimal Operational Impact/Easily Replaceable</option>
+                    </select>
+                </td>
+                <td>4</td>
+                <td class="formula" id="biScore">0</td>
+                <td class="formula" id="biWeighted">0</td>
+                <td>20</td>
+            </tr>
+            <tr>
+                <td>
+                    Compliance Requirements
+                    <div class="tooltip"><span class="info-icon">i</span>
+                        <span class="tooltiptext">Assesses the regulatory compliance requirements applicable to the vendor</span>
+                    </div>
+                    <span class="badge badge-nrc">NRC</span>
+                    <span class="badge badge-iaea">IAEA</span>
+                </td>
+                <td class="input">
+                    <select id="compliance" onchange="updateScores()">
+                        <option value="">Select...</option>
+                        <option value="5">Nuclear Regulatory Requirements (NRC/IAEA/Critical DBT Areas)</option>
+                        <option value="4">Safety Systems/NERC CIP Compliance</option>
+                        <option value="3">General Energy Sector Requirements</option>
+                        <option value="2">Limited Compliance/Supporting Systems</option>
+                        <option value="1">No Nuclear-Specific Requirements</option>
+                    </select>
+                </td>
+                <td>3</td>
+                <td class="formula" id="crScore">0</td>
+                <td class="formula" id="crWeighted">0</td>
+                <td>15</td>
+            </tr>
+            <tr>
+                <td>
+                    Technical Integration
+                    <div class="tooltip"><span class="info-icon">i</span>
+                        <span class="tooltiptext">Evaluates the depth of technical integration with plant systems</span>
+                    </div>
+                </td>
+                <td class="input">
+                    <select id="techIntegration" onchange="updateScores()">
+                        <option value="">Select...</option>
+                        <option value="5">Deep Integration with Safety/Control Systems</option>
+                        <option value="4">Integration with OT/Plant Monitoring Systems</option>
+                        <option value="3">Moderate Integration with Supporting Systems</option>
+                        <option value="2">Limited Integration/Isolated Systems</option>
+                        <option value="1">No Technical Integration</option>
+                    </select>
+                </td>
+                <td>2</td>
+                <td class="formula" id="tiScore">0</td>
+                <td class="formula" id="tiWeighted">0</td>
+                <td>10</td>
+            </tr>
+            <tr>
+                <td>
+                    Vendor Maturity
+                    <div class="tooltip"><span class="info-icon">i</span>
+                        <span class="tooltiptext">Assesses the vendor's experience and track record in nuclear industry</span>
+                    </div>
+                </td>
+                <td class="input">
+                    <select id="vendorMaturity" onchange="updateScores()">
+                        <option value="">Select...</option>
+                        <option value="5">New Vendor/No Nuclear Experience</option>
+                        <option value="4">Limited Nuclear Industry Experience</option>
+                        <option value="3">Established but Limited Nuclear Safety Culture</option>
+                        <option value="2">Nuclear-Qualified/Good Safety Record</option>
+                        <option value="1">Nuclear Industry Leader/Excellent Safety Record</option>
+                    </select>
+                </td>
+                <td>2</td>
+                <td class="formula" id="vmScore">0</td>
+                <td class="formula" id="vmWeighted">0</td>
+                <td>10</td>
+            </tr>
+            <tr>
+                <td>
+                    Safety Systems Impact
+                    <div class="tooltip"><span class="info-icon">i</span>
+                        <span class="tooltiptext">Evaluates the potential impact on safety-critical systems</span>
+                    </div>
+                    <span class="badge badge-nrc">NRC</span>
+                </td>
+                <td class="input">
+                    <select id="safetySystems" onchange="updateScores()">
+                        <option value="">Select...</option>
+                        <option value="5">Direct Safety Systems Access (Reactor Protection)</option>
+                        <option value="4">Secondary Safety Systems Access</option>
+                        <option value="3">Monitoring Systems Access</option>
+                        <option value="2">Support Systems Access</option>
+                        <option value="1">No Safety Systems Access</option>
+                    </select>
+                </td>
+                <td>5</td>
+                <td class="formula" id="ssScore">0</td>
+                <td class="formula" id="ssWeighted">0</td>
+                <td>25</td>
+            </tr>
+            <tr>
+                <td>
+                    Physical Access Level
+                    <div class="tooltip"><span class="info-icon">i</span>
+                        <span class="tooltiptext">Evaluates the level of physical access to nuclear facility areas</span>
+                    </div>
+                    <span class="badge badge-nrc">NRC</span>
+                </td>
+                <td class="input">
+                    <select id="physicalAccess" onchange="updateScores()">
+                        <option value="">Select...</option>
+                        <option value="5">Vital Area Access (Containment/Control Room)</option>
+                        <option value="4">Protected Area Access (Power Block)</option>
+                        <option value="3">Controlled Area Access (Technical Areas)</option>
+                        <option value="2">Limited Access (Administrative Areas)</option>
+                        <option value="1">No Physical Access (Remote Only)</option>
+                    </select>
+                </td>
+                <td>4</td>
+                <td class="formula" id="paScore">0</td>
+                <td class="formula" id="paWeighted">0</td>
+                <td>20</td>
+            </tr>
+            <tr>
+                <td>
+                    Radiation Exposure Risk
+                    <div class="tooltip"><span class="info-icon">i</span>
+                        <span class="tooltiptext">Assesses potential for vendor activities to impact radiation containment or monitoring</span>
+                    </div>
+                    <span class="badge badge-nrc">NRC</span>
+                    <span class="badge badge-iaea">IAEA</span>
+                </td>
+                <td class="input">
+                    <select id="radiationExposure" onchange="updateScores()">
+                        <option value="">Select...</option>
+                        <option value="5">Direct Fuel/Radiation Barrier Interface</option>
+                        <option value="4">Radiation Monitoring/Containment Systems</option>
+                        <option value="3">Secondary Containment/Waste Handling</option>
+                        <option value="2">Rad Worker Access/Limited Exposure</option>
+                        <option value="1">No Radiation Area Access</option>
+                    </select>
+                </td>
+                <td>5</td>
+                <td class="formula" id="reScore">0</td>
+                <td class="formula" id="reWeighted">0</td>
+                <td>25</td>
+            </tr>
+            <tr>
+                <td>
+                    Supply Chain Security
+                    <div class="tooltip"><span class="info-icon">i</span>
+                        <span class="tooltiptext">Evaluates vendor's supply chain integrity controls and verification measures</span>
+                    </div>
+                </td>
+                <td class="input">
+                    <select id="supplyChain" onchange="updateScores()">
+                        <option value="">Select...</option>
+                        <option value="5">Critical Safety Component Supplier</option>
+                        <option value="4">OT/Control System Component Supplier</option>
+                        <option value="3">Standard Equipment/Parts Supplier</option>
+                        <option value="2">Consumables/Non-Critical Parts</option>
+                        <option value="1">No Physical Components/Services Only</option>
+                    </select>
+                </td>
+                <td>3</td>
+                <td class="formula" id="scScore">0</td>
+                <td class="formula" id="scWeighted">0</td>
+                <td>15</td>
+            </tr>
+            <tr>
+                <td>
+                    Cyber Defense Posture
+                    <div class="tooltip"><span class="info-icon">i</span>
+                        <span class="tooltiptext">Evaluates vendor's cyber security defenses and incident response capabilities</span>
+                    </div>
+                    <span class="badge badge-nrc">NRC</span>
+                </td>
+                <td class="input">
+                    <select id="cyberDefense" onchange="updateScores()">
+                        <option value="">Select...</option>
+                        <option value="5">Minimal/Unverified Security Controls</option>
+                        <option value="4">Basic Security/Limited Testing</option>
+                        <option value="3">Industry Standard Controls/Regular Testing</option>
+                        <option value="2">Advanced Security Program/Continuous Monitoring</option>
+                        <option value="1">Nuclear-Grade Cybersecurity/Advanced Threat Protection</option>
+                    </select>
+                </td>
+                <td>4</td>
+                <td class="formula" id="cdScore">0</td>
+                <td class="formula" id="cdWeighted">0</td>
+                <td>20</td>
+            </tr>
+            <tr>
+                <td>
+                    Nuclear Regulatory Compliance
+                    <div class="tooltip"><span class="info-icon">i</span>
+                        <span class="tooltiptext">Evaluates vendor's history with nuclear regulatory requirements and enforcement actions</span>
+                    </div>
+                    <span class="badge badge-nrc">NRC</span>
+                    <span class="badge badge-iaea">IAEA</span>
+                </td>
+                <td class="input">
+                    <select id="nuclearRegCompliance" onchange="updateScores()">
+                        <option value="">Select...</option>
+                        <option value="5">Extensive Regulatory Violations</option>
+                        <option value="4">Limited Regulatory Issues</option>
+                        <option value="3">Meets Minimum Requirements</option>
+                        <option value="2">Strong Compliance Record</option>
+                        <option value="1">Industry-Leading Compliance</option>
+                    </select>
+                </td>
+                <td>5</td>
+                <td class="formula" id="nrcScore">0</td>
+                <td class="formula" id="nrcWeighted">0</td>
+                <td>25</td>
+            </tr>
+            <tr>
+                <td>
+                    Nuclear Quality Assurance Program
+                    <div class="tooltip"><span class="info-icon">i</span>
+                        <span class="tooltiptext">Assesses alignment with 10 CFR Part 50 Appendix B requirements</span>
+                    </div>
+                    <span class="badge badge-nrc">NRC</span>
+                </td>
+                <td class="input">
+                    <select id="qualityAssurance" onchange="updateScores()">
+                        <option value="">Select...</option>
+                        <option value="5">No Nuclear QA Program</option>
+                        <option value="4">Basic QA Program</option>
+                        <option value="3">Standard Nuclear QA</option>
+                        <option value="2">Comprehensive Nuclear QA</option>
+                        <option value="1">Industry-Leading Nuclear QA</option>
+                    </select>
+                </td>
+                <td>5</td>
+                <td class="formula" id="qaScore">0</td>
+                <td class="formula" id="qaWeighted">0</td>
+                <td>25</td>
+            </tr>
+            <tr>
+                <td>
+                    Nuclear Safety Culture
+                    <div class="tooltip"><span class="info-icon">i</span>
+                        <span class="tooltiptext">Evaluates vendor's prioritization of safety over production</span>
+                    </div>
+                    <span class="badge badge-nrc">NRC</span>
+                </td>
+                <td class="input">
+                    <select id="safetyCulture" onchange="updateScores()">
+                        <option value="">Select...</option>
+                        <option value="5">Poor Safety Culture</option>
+                        <option value="4">Developing Safety Culture</option>
+                        <option value="3">Standard Safety Approach</option>
+                        <option value="2">Strong Safety Culture</option>
+                        <option value="1">Excellence in Safety Culture</option>
+                    </select>
+                </td>
+                <td>5</td>
+                <td class="formula" id="scuScore">0</td>
+                <td class="formula" id="scuWeighted">0</td>
+                <td>25</td>
+            </tr>
+            <tr>
+                <td>
+                    Nuclear Operating Experience Integration
+                    <div class="tooltip"><span class="info-icon">i</span>
+                        <span class="tooltiptext">Assesses how vendor incorporates industry lessons learned</span>
+                    </div>
+                </td>
+                <td class="input">
+                    <select id="opex" onchange="updateScores()">
+                        <option value="">Select...</option>
+                        <option value="5">No OPEX Integration</option>
+                        <option value="4">Limited OPEX Usage</option>
+                        <option value="3">Standard OPEX Program</option>
+                        <option value="2">Comprehensive OPEX Integration</option>
+                        <option value="1">Industry-Leading OPEX Program</option>
+                    </select>
+                </td>
+                <td>3</td>
+                <td class="formula" id="opexScore">0</td>
+                <td class="formula" id="opexWeighted">0</td>
+                <td>15</td>
+            </tr>
+            <tr>
+                <td>
+                    Emergency Preparedness Integration
+                    <div class="tooltip"><span class="info-icon">i</span>
+                        <span class="tooltiptext">Measures vendor's integration with site emergency plans</span>
+                    </div>
+                    <span class="badge badge-nrc">NRC</span>
+                </td>
+                <td class="input">
+                    <select id="emergencyPrep" onchange="updateScores()">
+                        <option value="">Select...</option>
+                        <option value="5">No Emergency Preparedness</option>
+                        <option value="4">Limited Emergency Awareness</option>
+                        <option value="3">Standard Emergency Procedures</option>
+                        <option value="2">Comprehensive Emergency Integration</option>
+                        <option value="1">Full Emergency Plan Integration</option>
+                    </select>
+                </td>
+                <td>4</td>
+                <td class="formula" id="epScore">0</td>
+                <td class="formula" id="epWeighted">0</td>
+                <td>20</td>
+            </tr>
+            <tr>
+                <td>
+                    Personnel Security Clearance
+                    <div class="tooltip"><span class="info-icon">i</span>
+                        <span class="tooltiptext">Evaluates thoroughness of background checks and nuclear-specific vetting</span>
+                    </div>
+                    <span class="badge badge-nrc">NRC</span>
+                </td>
+                <td class="input">
+                    <select id="personnelSecurity" onchange="updateScores()">
+                        <option value="">Select...</option>
+                        <option value="5">No Security Vetting</option>
+                        <option value="4">Basic Background Checks</option>
+                        <option value="3">Standard Nuclear Clearance</option>
+                        <option value="2">Enhanced Security Vetting</option>
+                        <option value="1">Top-Tier Security Clearance</option>
+                    </select>
+                </td>
+                <td>4</td>
+                <td class="formula" id="psScore">0</td>
+                <td class="formula" id="psWeighted">0</td>
+                <td>20</td>
+            </tr>
+            <tr>
+                <td>
+                    Design Basis Knowledge
+                    <div class="tooltip"><span class="info-icon">i</span>
+                        <span class="tooltiptext">Assesses vendor's understanding of plant licensing basis and design requirements</span>
+                    </div>
+                    <span class="badge badge-nrc">NRC</span>
+                </td>
+                <td class="input">
+                    <select id="designBasis" onchange="updateScores()">
+                        <option value="">Select...</option>
+                        <option value="5">No Design Basis Knowledge</option>
+                        <option value="4">Limited Design Understanding</option>
+                        <option value="3">Standard Design Knowledge</option>
+                        <option value="2">Comprehensive Design Expertise</option>
+                        <option value="1">Expert Design Authority</option>
+                    </select>
+                </td>
+                <td>5</td>
+                <td class="formula" id="dbScore">0</td>
+                <td class="formula" id="dbWeighted">0</td>
+                <td>25</td>
+            </tr>
+            <tr class="total">
+                <td colspan="4">TOTAL SCORE:</td>
+                <td class="formula" id="totalScore">0</td>
+                <td>335</td>
+            </tr>
+            <tr class="total">
+                <td colspan="4">RISK PERCENTAGE:</td>
+                <td class="formula" id="riskPercentage">0%</td>
+                <td>100%</td>
+            </tr>
+        </table>
+        
+        <table>
+            <tr>
+                <td><strong>RISK TIER:</strong></td>
+                <td id="riskTier" class="formula">Not Calculated</td>
+                <td id="approvalLevel" class="formula">N/A</td>
+            </tr>
+        </table>
+        
+        <div class="section">Risk Tier Thresholds</div>
+        <ul>
+            <li><strong>High Risk:</strong> ≥70% of maximum score</li>
+            <li><strong>Medium Risk:</strong> 40%-69% of maximum score</li>
+            <li><strong>Low Risk:</strong> &lt;40% of maximum score</li>
+        </ul>
+        
+        <div class="section">Required Actions Based on Risk Tier:</div>
+        
+        <table>
+            <tr>
+                <th width="20%">Risk Tier</th>
+                <th>Required Actions</th>
+            </tr>
+            <tr class="high-risk">
+                <td><strong>High Risk</strong></td>
+                <td>
+                    <ul>
+                        <li>Comprehensive nuclear security assessment required</li>
+                        <li>NRC/Regulatory compliance verification</li>
+                        <li>Quarterly security and safety reviews</li>
+                        <li>Plant Manager/CISO/Executive approval required</li>
+                        <li>Enhanced security and safety requirements in contracts</li>
+                        <li>Joint incident response & safety procedures development</li>
+                        <li>Background checks for all vendor personnel</li>
+                        <li>Air-gapped test environment for software validation</li>
+                        <li>Supply chain integrity verification</li>
+                        <li>Third-party nuclear security assessment</li>
+                        <li>CFR 10 Part 50 Appendix B quality program verification</li>
+                        <li>Continuous monitoring of vendor activities</li>
+                        <li>Dedicated vendor liaison with nuclear security credentials</li>
+                        <li>Radiation protection program integration required</li>
+                        <li>Nuclear-specific penetration testing required (for digital systems)</li>
+                        <li>Design basis impact assessment required</li>
+                        <li>Formal safety culture assessment</li>
+                        <li>NRC reportability evaluation</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr class="medium-risk">
+                <td><strong>Medium Risk</strong></td>
+                <td>
+                    <ul>
+                        <li>Annual security assessment</li>
+                        <li>Regulatory compliance verification</li>
+                        <li>Semi-annual reviews</li>
+                        <li>Department head approval required</li>
+                        <li>Standard security requirements in contracts</li>
+                        <li>Incident response coordination</li>
+                        <li>Background checks for key personnel</li>
+                        <li>Controlled test environment for software</li>
+                        <li>Supply chain review</li>
+                        <li>Internal security assessment</li>
+                        <li>Quality program review</li>
+                        <li>Periodic monitoring of vendor activities</li>
+                        <li>Design basis review where applicable</li>
+                    </ul>
+                </td>
+            </tr>
+            <tr class="low-risk">
+                <td><strong>Low Risk</strong></td>
+                <td>
+                    <ul>
+                        <li>Basic security assessment</li>
+                        <li>Annual compliance check</li>
+                        <li>Standard contract terms</li>
+                        <li>Minimal monitoring</li>
+                        <li>Standard background checks</li>
+                        <li>Basic quality program review</li>
+                    </ul>
+                </td>
+            </tr>
+        </table>
+    </div>
+    
+    <div id="DataSensitivity" class="tabcontent">
+        <div class="section">Data Sensitivity Guidelines</div>
+        <p>Evaluate the type and classification of data the vendor will access or process:</p>
+        <ul>
+            <li><strong>5 - Critical Nuclear Data/Systems Information:</strong> Includes SCADA, plant design, security plans, or safeguards information.</li>
+            <li><strong>4 - Operations Data:</strong> Includes maintenance schedules, fuel management, or personnel records.</li>
+            <li><strong>3 - Limited Sensitive Data:</strong> Administrative or non-critical operational data with restricted access.</li>
+            <li><strong>2 - Minimal Internal Data:</strong> Non-operational data with minimal sensitivity.</li>
+            <li><strong>1 - Public/Non-Sensitive Data:</strong> Publicly available or non-sensitive information.</li>
+        </ul>
+    </div>
+    
+    <div id="SystemAccess" class="tabcontent">
+        <div class="section">System Access Guidelines</div>
+        <p>Measure the level of access the vendor has to nuclear facility systems and networks:</p>
+        <ul>
+            <li><strong>5 - Safety-Critical Systems/OT Network Access:</strong> Access to operational technology or safety-critical systems.</li>
+            <li><strong>4 - Control System Network/ICS Access:</strong> Access to industrial control systems or plant networks.</li>
+            <li><strong>3 - Corporate Network/Limited IT-OT Access:</strong> Limited access to IT-OT integrated systems.</li>
+            <li><strong>2 - Development/Test Environment Only:</strong> Access restricted to non-production environments.</li>
+            <li><strong>1 - No System Access:</strong> No access to any systems or networks.</li>
+        </ul>
+    </div>
+    
+    <div id="BusinessImpact" class="tabcontent">
+        <div class="section">Business Impact Guidelines</div>
+        <p>Assess the impact on plant operations if vendor services are disrupted:</p>
+        <ul>
+            <li><strong>5 - Reactor Safety/Plant Continuity Function:</strong> Disruption could impact reactor safety or plant operations.</li>
+            <li><strong>4 - Production Systems/Limited Alternatives:</strong> Disruption affects production with few alternatives.</li>
+            <li><strong>3 - Supporting Operations/Back-Office Systems:</strong> Disruption impacts supporting functions.</li>
+            <li><strong>2 - Administrative Function/Multiple Alternatives:</strong> Disruption has minimal impact with multiple alternatives.</li>
+            <li><strong>1 - Minimal Operational Impact/Easily Replaceable:</strong> Disruption has negligible impact.</li>
+        </ul>
+    </div>
+    
+    <div id="Compliance" class="tabcontent">
+        <div class="section">Compliance Requirements Guidelines</div>
+        <p>Evaluate the regulatory compliance requirements applicable to the vendor:</p>
+        <ul>
+            <li><strong>5 - Nuclear Regulatory Requirements:</strong> Subject to NRC, IAEA, or critical DBT regulations.</li>
+            <li><strong>4 - Safety Systems/NERC CIP Compliance:</strong> Must comply with safety or NERC CIP standards.</li>
+            <li><strong>3 - General Energy Sector Requirements:</strong> Subject to general energy sector regulations.</li>
+            <li><strong>2 - Limited Compliance/Supporting Systems:</strong> Minimal compliance requirements for supporting systems.</li>
+            <li><strong>1 - No Nuclear-Specific Requirements:</strong> No specific nuclear regulations apply.</li>
+        </ul>
+    </div>
+    
+    <div id="TechIntegration" class="tabcontent">
+        <div class="section">Technical Integration Guidelines</div>
+        <p>Assess the depth of technical integration with plant systems:</p>
+        <ul>
+            <li><strong>5 - Deep Integration with Safety/Control Systems:</strong> Extensive integration with safety or control systems.</li>
+            <li><strong>4 - Integration with OT/Plant Monitoring Systems:</strong> Integration with operational technology or monitoring systems.</li>
+            <li><strong>3 - Moderate Integration with Supporting Systems:</strong> Moderate integration with non-critical systems.</li>
+            <li><strong>2 - Limited Integration/Isolated Systems:</strong> Limited or isolated system integration.</li>
+            <li><strong>1 - No Technical Integration:</strong> No integration with plant systems.</li>
+        </ul>
+    </div>
+    
+    <div id="VendorMaturity" class="tabcontent">
+        <div class="section">Vendor Maturity Guidelines</div>
+        <p>Evaluate the vendor's experience and track record in the nuclear industry:</p>
+        <ul>
+            <li><strong>5 - New Vendor/No Nuclear Experience:</strong> No prior nuclear industry experience.</li>
+            <li><strong>4 - Limited Nuclear Industry Experience:</strong> Limited experience in nuclear projects.</li>
+            <li><strong>3 - Established but Limited Nuclear Safety Culture:</strong> Established vendor with limited nuclear safety focus.</li>
+            <li><strong>2 - Nuclear-Qualified/Good Safety Record:</strong> Qualified with a good safety record.</li>
+            <li><strong>1 - Nuclear Industry Leader/Excellent Safety Record:</strong> Industry leader with an excellent safety record.</li>
+        </ul>
+    </div>
+    
+    <div id="SafetySystems" class="tabcontent">
+        <div class="section">Safety Systems Impact Guidelines</div>
+        <p>Evaluate the potential impact on safety-critical systems:</p>
+        <ul>
+            <li><strong>5 - Direct Safety Systems Access:</strong> Direct access to reactor protection or safety systems.</li>
+            <li><strong>4 - Secondary Safety Systems Access:</strong> Access to secondary safety systems.</li>
+            <li><strong>3 - Monitoring Systems Access:</strong> Access to safety monitoring systems.</li>
+            <li><strong>2 - Support Systems Access:</strong> Access to supporting safety systems.</li>
+            <li><strong>1 - No Safety Systems Access:</strong> No access to safety systems.</li>
+        </ul>
+    </div>
+    
+    <div id="PhysicalAccess" class="tabcontent">
+        <div class="section">Physical Access Level Guidelines</div>
+        <p>Evaluate the level of physical access to nuclear facility areas:</p>
+        <ul>
+            <li><strong>5 - Vital Area Access:</strong> Access to containment or control room areas.</li>
+            <li><strong>4 - Protected Area Access:</strong> Access to power block or protected areas.</li>
+            <li><strong>3 - Controlled Area Access:</strong> Access to technical or controlled areas.</li>
+            <li><strong>2 - Limited Access:</strong> Access to administrative areas only.</li>
+            <li><strong>1 - No Physical Access:</strong> Remote access only.</li>
+        </ul>
+    </div>
+    
+    <div id="RadiationExposure" class="tabcontent">
+        <div class="section">Radiation Exposure Risk Guidelines</div>
+        <p>Assess the potential for vendor activities to impact radiation containment or monitoring:</p>
+        <ul>
+            <li><strong>5 - Direct Fuel/Radiation Barrier Interface:</strong> Direct interaction with fuel or radiation barriers.</li>
+            <li><strong>4 - Radiation Monitoring/Containment Systems:</strong> Access to radiation monitoring or containment systems.</li>
+            <li><strong>3 - Secondary Containment/Waste Handling:</strong> Involvement in secondary containment or waste handling.</li>
+            <li><strong>2 - Rad Worker Access/Limited Exposure:</strong> Limited radiation exposure as a radiation worker.</li>
+            <li><strong>1 - No Radiation Area Access:</strong> No access to radiation areas.</li>
+        </ul>
+    </div>
+    
+    <div id="SupplyChain" class="tabcontent">
+        <div class="section">Supply Chain Security Guidelines</div>
+        <p>Evaluate the vendor's supply chain integrity controls and verification measures:</p>
+        <ul>
+            <li><strong>5 - Critical Safety Component Supplier:</strong> Supplies critical safety components.</li>
+            <li><strong>4 - OT/Control System Component Supplier:</strong> Supplies operational technology or control system components.</li>
+            <li><strong>3 - Standard Equipment/Parts Supplier:</strong> Supplies standard equipment or parts.</li>
+            <li><strong>2 - Consumables/Non-Critical Parts:</strong> Supplies consumables or non-critical parts.</li>
+            <li><strong>1 - No Physical Components/Services Only:</strong> Provides services only, no physical components.</li>
+        </ul>
+    </div>
+    
+    <div id="CyberDefense" class="tabcontent">
+        <div class="section">Cyber Defense Posture Guidelines</div>
+        <p>Evaluate the vendor's cybersecurity defenses and incident response capabilities:</p>
+        <ul>
+            <li><strong>5 - Minimal/Unverified Security Controls:</strong> Minimal or unverified cybersecurity measures.</li>
+            <li><strong>4 - Basic Security/Limited Testing:</strong> Basic security with limited testing.</li>
+            <li><strong>3 - Industry Standard Controls/Regular Testing:</strong> Industry-standard controls with regular testing.</li>
+            <li><strong>2 - Advanced Security Program/Continuous Monitoring:</strong> Advanced security with continuous monitoring.</li>
+            <li><strong>1 - Nuclear-Grade Cybersecurity/Advanced Threat Protection:</strong> Nuclear-grade cybersecurity with advanced threat protection.</li>
+        </ul>
+    </div>
+    
+    <div id="RegCompliance" class="tabcontent">
+        <div class="section">Nuclear Regulatory Compliance Guidelines</div>
+        <p>Evaluate the vendor's history with nuclear regulatory requirements and enforcement actions:</p>
+        <ul>
+            <li><strong>5 - Extensive Regulatory Violations:</strong> History of significant regulatory violations.</li>
+            <li><strong>4 - Limited Regulatory Issues:</strong> Some regulatory issues but not extensive.</li>
+            <li><strong>3 - Meets Minimum Requirements:</strong> Meets minimum regulatory requirements.</li>
+            <li><strong>2 - Strong Compliance Record:</strong> Strong history of regulatory compliance.</li>
+            <li><strong>1 - Industry-Leading Compliance:</strong> Industry leader in regulatory compliance.</li>
+        </ul>
+    </div>
+    
+    <div id="QualityAssurance" class="tabcontent">
+        <div class="section">Nuclear Quality Assurance Program Guidelines</div>
+        <p>Assess alignment with 10 CFR Part 50 Appendix B requirements:</p>
+        <ul>
+            <li><strong>5 - No Nuclear QA Program:</strong> No quality assurance program specific to nuclear requirements.</li>
+            <li><strong>4 - Basic QA Program:</strong> Basic quality assurance program with limited nuclear focus.</li>
+            <li><strong>3 - Standard Nuclear QA:</strong> Standard nuclear quality assurance program.</li>
+            <li><strong>2 - Comprehensive Nuclear QA:</strong> Comprehensive nuclear quality assurance program.</li>
+            <li><strong>1 - Industry-Leading Nuclear QA:</strong> Industry-leading nuclear quality assurance program.</li>
+        </ul>
+    </div>
+    
+    <div id="SafetyCulture" class="tabcontent">
+        <div class="section">Nuclear Safety Culture Guidelines</div>
+        <p>Evaluate the vendor's prioritization of safety over production:</p>
+        <ul>
+            <li><strong>5 - Poor Safety Culture:</strong> Little to no emphasis on safety.</li>
+            <li><strong>4 - Developing Safety Culture:</strong> Developing but inconsistent safety culture.</li>
+            <li><strong>3 - Standard Safety Approach:</strong> Standard approach to safety.</li>
+            <li><strong>2 - Strong Safety Culture:</strong> Strong emphasis on safety.</li>
+            <li><strong>1 - Excellence in Safety Culture:</strong> Industry-leading safety culture.</li>
+        </ul>
+    </div>
+    
+    <div id="OPEX" class="tabcontent">
+        <div class="section">Nuclear Operating Experience Integration Guidelines</div>
+        <p>Assess how the vendor incorporates industry lessons learned:</p>
+        <ul>
+            <li><strong>5 - No OPEX Integration:</strong> No use of operating experience.</li>
+            <li><strong>4 - Limited OPEX Usage:</strong> Limited use of operating experience.</li>
+            <li><strong>3 - Standard OPEX Program:</strong> Standard operating experience program.</li>
+            <li><strong>2 - Comprehensive OPEX Integration:</strong> Comprehensive use of operating experience.</li>
+            <li><strong>1 - Industry-Leading OPEX Program:</strong> Industry-leading operating experience program.</li>
+        </ul>
+    </div>
+    
+    <div id="EmergencyPrep" class="tabcontent">
+        <div class="section">Emergency Preparedness Integration Guidelines</div>
+        <p>Measure the vendor's integration with site emergency plans:</p>
+        <ul>
+            <li><strong>5 - No Emergency Preparedness:</strong> No emergency preparedness measures.</li>
+            <li><strong>4 - Limited Emergency Awareness:</strong> Limited awareness of emergency procedures.</li>
+            <li><strong>3 - Standard Emergency Procedures:</strong> Standard emergency preparedness procedures.</li>
+            <li><strong>2 - Comprehensive Emergency Integration:</strong> Comprehensive integration with emergency plans.</li>
+            <li><strong>1 - Full Emergency Plan Integration:</strong> Full integration with site emergency plans.</li>
+        </ul>
+    </div>
+    
+    <div id="PersonnelSecurity" class="tabcontent">
+        <div class="section">Personnel Security Clearance Guidelines</div>
+        <p>Evaluate the thoroughness of background checks and nuclear-specific vetting:</p>
+        <ul>
+            <li><strong>5 - No Security Vetting:</strong> No background checks or vetting.</li>
+            <li><strong>4 - Basic Background Checks:</strong> Basic background checks only.</li>
+            <li><strong>3 - Standard Nuclear Clearance:</strong> Standard nuclear security clearance.</li>
+            <li><strong>2 - Enhanced Security Vetting:</strong> Enhanced vetting procedures.</li>
+            <li><strong>1 - Top-Tier Security Clearance:</strong> Top-tier nuclear security clearance.</li>
+        </ul>
+    </div>
+    
+    <div id="DesignBasis" class="tabcontent">
+        <div class="section">Design Basis Knowledge Guidelines</div>
+        <p>Assess the vendor's understanding of plant licensing basis and design requirements:</p>
+        <ul>
+            <li><strong>5 - No Design Basis Knowledge:</strong> No understanding of plant design basis.</li>
+            <li><strong>4 - Limited Design Understanding:</strong> Limited understanding of design requirements.</li>
+            <li><strong>3 - Standard Design Knowledge:</strong> Standard knowledge of plant design basis.</li>
+            <li><strong>2 - Comprehensive Design Expertise:</strong> Comprehensive understanding of design requirements.</li>
+            <li><strong>1 - Expert Design Authority:</strong> Expert-level knowledge of plant design basis.</li>
+        </ul>
+    </div>
+    
+    <script>
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].classList.remove("show");
+            }
+            tablinks = document.getElementsByClassName("tab");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
+            document.getElementById(tabName).classList.add("show");
+            evt.currentTarget.classList.add("active");
+        }
+
+        function updateScores() {
+            const categories = [
+                { id: "dataSensitivity", weight: 5, scoreId: "dsScore", weightedId: "dsWeighted" },
+                { id: "systemAccess", weight: 4, scoreId: "saScore", weightedId: "saWeighted" },
+                { id: "businessImpact", weight: 4, scoreId: "biScore", weightedId: "biWeighted" },
+                { id: "compliance", weight: 3, scoreId: "crScore", weightedId: "crWeighted" },
+                { id: "techIntegration", weight: 2, scoreId: "tiScore", weightedId: "tiWeighted" },
+                { id: "vendorMaturity", weight: 2, scoreId: "vmScore", weightedId: "vmWeighted" },
+                { id: "safetySystems", weight: 5, scoreId: "ssScore", weightedId: "ssWeighted" },
+                { id: "physicalAccess", weight: 4, scoreId: "paScore", weightedId: "paWeighted" },
+                { id: "radiationExposure", weight: 5, scoreId: "reScore", weightedId: "reWeighted" },
+                { id: "supplyChain", weight: 3, scoreId: "scScore", weightedId: "scWeighted" },
+                { id: "cyberDefense", weight: 4, scoreId: "cdScore", weightedId: "cdWeighted" },
+                { id: "nuclearRegCompliance", weight: 5, scoreId: "nrcScore", weightedId: "nrcWeighted" },
+                { id: "qualityAssurance", weight: 5, scoreId: "qaScore", weightedId: "qaWeighted" },
+                { id: "safetyCulture", weight: 5, scoreId: "scuScore", weightedId: "scuWeighted" },
+                { id: "opex", weight: 3, scoreId: "opexScore", weightedId: "opexWeighted" },
+                { id: "emergencyPrep", weight: 4, scoreId: "epScore", weightedId: "epWeighted" },
+                { id: "personnelSecurity", weight: 4, scoreId: "psScore", weightedId: "psWeighted" },
+                { id: "designBasis", weight: 5, scoreId: "dbScore", weightedId: "dbWeighted" }
+            ];
+
+            let totalWeightedScore = 0;
+            const maxScore = 335;
+
+            categories.forEach(category => {
+                const select = document.getElementById(category.id);
+                const score = parseInt(select.value) || 0;
+                const weightedScore = score * category.weight;
+
+                document.getElementById(category.scoreId).textContent = score;
+                document.getElementById(category.weightedId).textContent = weightedScore;
+
+                totalWeightedScore += weightedScore;
+            });
+
+            const riskPercentage = ((totalWeightedScore / maxScore) * 100).toFixed(2);
+            document.getElementById("totalScore").textContent = totalWeightedScore;
+            document.getElementById("riskPercentage").textContent = riskPercentage + "%";
+
+            let riskTier = "Not Calculated";
+            let approvalLevel = "N/A";
+
+            if (totalWeightedScore > 0) {
+                if (riskPercentage >= 70) {
+                    riskTier = "High Risk";
+                    approvalLevel = "Plant Manager/CISO/Executive";
+                } else if (riskPercentage >= 40) {
+                    riskTier = "Medium Risk";
+                    approvalLevel = "Department Head";
+                } else {
+                    riskTier = "Low Risk";
+                    approvalLevel = "Standard Approval";
+                }
+            }
+
+            document.getElementById("riskTier").textContent = riskTier;
+            document.getElementById("approvalLevel").textContent = approvalLevel;
+        }
+    </script>
+</body>
+</html>
